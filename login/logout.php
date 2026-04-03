@@ -1,8 +1,13 @@
 <?php
 session_start();
+
+// hapus session
 session_unset();
 session_destroy();
 
-header("Location: login.php?logout=1");
+// hapus cookie
+setcookie("email", "", time() - 3600, "/");
+
+header("Location: login.php");
 exit;
 ?>
