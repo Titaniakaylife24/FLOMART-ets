@@ -2,7 +2,23 @@
 session_start();
 include '../koneksi/koneksi.php';
 
-// AUTO LOGIN dari COOKIE
+// SESSION TIMEOUT 1 menit
+$timeout = 60;
+
+if (isset($_SESSION['last_activity'])) {
+    if (time() - $_SESSION['last_activity'] > $timeout) {
+        session_unset();
+        session_destroy();
+        session_start();
+    }
+}
+
+// update aktivitas jika session masih ada
+if (isset($_SESSION['id_user'])) {
+    $_SESSION['last_activity'] = time();
+}
+
+// AUTO LOGIN DARI COOKIE
 if (!isset($_SESSION['id_user']) && isset($_COOKIE['email'])) {
     $email = $_COOKIE['email'];
 
@@ -16,9 +32,11 @@ if (!isset($_SESSION['id_user']) && isset($_COOKIE['email'])) {
         $_SESSION['nama'] = $user['nama'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
+        $_SESSION['last_activity'] = time();
     }
 }
-// kalau sudah login, redirect
+
+// REDIRECT JIKA SUDAH LOGIN
 if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == 'admin') {
         header("Location: ../admin/dashboard.php");
@@ -32,6 +50,5 @@ if (isset($_SESSION['role'])) {
     }
 }
 
-// panggil HTML
 include 'login_view.php';
 ?>
