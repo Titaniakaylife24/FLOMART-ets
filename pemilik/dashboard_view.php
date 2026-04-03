@@ -2,18 +2,17 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Pembeli</title>
+    <title>Dashboard Pemilik</title>
 </head>
 <body>
 
-    <h1>Dashboard Pembeli</h1>
+    <h1>Dashboard Pemilik</h1>
     <p>Halo, <?= $nama; ?>!</p>
     <p>Role: <?= $role; ?></p>
 
     <ul>
-        <li>Lihat Produk</li>
-        <li>Keranjang</li>
-        <li>Pesanan Saya</li>
+        <li>Laporan Penjualan</li>
+        <li>Produk Terlaris</li>
     </ul>
 
     <button onclick="konfirmasiLogout()">Logout</button>
