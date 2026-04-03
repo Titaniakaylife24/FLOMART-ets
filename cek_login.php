@@ -11,7 +11,7 @@ function harusLogin() {
 function cekRole($role) {
     harusLogin();
 
-    if (!isset($_SESSION['role']) || $_SESSION['role'] != $role) {
+    if ($_SESSION['role'] != $role) {
         echo "Akses ditolak!";
         exit;
     }

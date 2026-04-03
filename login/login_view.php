@@ -9,8 +9,13 @@
 <h2>Login</h2>
 
 <form action="proses_login.php" method="POST">
-    <input type="email" name="email" placeholder="Email"><br>
-    <input type="password" name="password" placeholder="Password"><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+
+    <label>
+        <input type="checkbox" name="remember"> Remember Me
+    </label><br><br>
+
     <button type="submit" name="login">Login</button>
 </form>
 
