@@ -20,6 +20,7 @@ cekRole('pembeli');
         <li>Pesanan Saya</li>
     </ul>
 
-    <a href="../login/logout.php">Logout</a>
+    <a href="../login/logout.php" onclick="return konfirmasiLogout()">Logout</a>
+    <script src="../assets/js/script.js"></script>
 </body>
 </html>
