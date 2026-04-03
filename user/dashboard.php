@@ -1,23 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Pembeli</title>
-</head>
-<body>
+<?php
+include '../cek_login.php';
+cekRole('pembeli');
 
-    <h1>Dashboard Pembeli</h1>
-    <p>Halo, <?= $nama; ?>!</p>
-    <p>Role: <?= $role; ?></p>
+$nama = $_SESSION['nama'];
+$role = $_SESSION['role'];
 
-    <ul>
-        <li>Lihat Produk</li>
-        <li>Keranjang</li>
-        <li>Pesanan Saya</li>
-    </ul>
-
-    <button onclick="konfirmasiLogout()">Logout</button>
-
-    <script src="../assets/js/script.js"></script>
-</body>
-</html>
+include 'dashboard_view.php';
+?>
