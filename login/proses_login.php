@@ -11,7 +11,6 @@ if (isset($_POST['login'])) {
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) > 0) {
-
         $user = mysqli_fetch_assoc($result);
 
         // SESSION
@@ -19,8 +18,14 @@ if (isset($_POST['login'])) {
         $_SESSION['nama'] = $user['nama'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
+        $_SESSION['last_activity'] = time();
 
-        // REDIRECT
+        // COOKIE 1 menit
+        if (isset($_POST['remember'])) {
+            setcookie('email', $user['email'], time() + 60, "/");
+        }
+
+        // REDIRECT SESUAI ROLE
         if ($user['role'] == 'admin') {
             header("Location: ../admin/dashboard.php");
         } elseif ($user['role'] == 'owner') {
@@ -28,7 +33,6 @@ if (isset($_POST['login'])) {
         } elseif ($user['role'] == 'pembeli') {
             header("Location: ../user/dashboard.php");
         }
-
         exit;
 
     } else {
