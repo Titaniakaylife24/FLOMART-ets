@@ -19,7 +19,7 @@ cekRole('owner');
         <li>Produk Terlaris</li>
     </ul>
 
-    <a href="../login/logout.php" onclick="return konfirmasiLogout()">Logout</a>
+    <button onclick="konfirmasiLogout()">Logout</button>
     <script src="../assets/js/script.js"></script>
 </body>
 </html>
