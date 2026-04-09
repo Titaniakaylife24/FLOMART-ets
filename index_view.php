@@ -39,7 +39,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
 <h1>Selamat datang, <?= htmlspecialchars($nama); ?>!</h1>
 
 <?php if ($isLogin): ?>
-    <button onclick="konfirmasiLogout('login/logout.php')">Logout</button>
+    <button type="button" onclick="konfirmasiLogout('/FLOMART-ets/login/logout.php')">Logout</button>
 <?php else: ?>
     <a href="/FLOMART-ets/login/login.php">Login</a>
 <?php endif; ?>
@@ -71,12 +71,12 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
             </div>
 
             <?php if ($isPembeli): ?>
-    <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $rekom['id_produk']); ?>
-<button type="button" onclick="window.location.href='<?= $loginUrl; ?>'">🛒</button>
-    </a>
-<?php else: ?>
-    <?php $redirect = "keranjang/tambah.php?id=" . $rekom['id_produk']; ?>
-    <button type="button" onclick="harusLogin('<?= htmlspecialchars($redirect, ENT_QUOTES); ?>')">🛒</button>
+                <a href="/FLOMART-ets/keranjang/tambah.php?id=<?= $rekom['id_produk']; ?>">
+                    <button type="button">🛒</button>
+                 </a>
+            <?php else: ?>
+            <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $rekom['id_produk']); ?>
+                <button type="button" onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')">🛒</button>
 <?php endif; ?>
         </div>
         <br>
@@ -123,12 +123,12 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
             </div>
 
             <?php if ($isPembeli): ?>
-    <a href="keranjang/tambah.php?id=<?= $produk['id_produk']; ?>">
-        <button type="button">🛒</button>
-    </a>
-<?php else: ?>
-    <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $produk['id_produk']); ?>
-<button type="button" onclick="window.location.href='<?= $loginUrl; ?>'">🛒</button>
+                <a href="/FLOMART-ets/keranjang/tambah.php?id=<?= $produk['id_produk']; ?>">
+                    <button type="button">🛒</button>
+                </a>
+            <?php else: ?>
+            <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $produk['id_produk']); ?>
+                <button type="button" onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')">🛒</button>
 <?php endif; ?>
         </div>
         <br>
