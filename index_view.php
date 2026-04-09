@@ -70,7 +70,14 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
                 <p>Siap tanam • Kualitas premium</p>
             </div>
 
-            <button>🛒</button>
+            <?php if ($isPembeli): ?>
+    <a href="keranjang/tambah.php?id=<?= $rekom['id_produk']; ?>">
+        <button type="button">🛒</button>
+    </a>
+<?php else: ?>
+    <?php $redirect = "keranjang/tambah.php?id=" . $rekom['id_produk']; ?>
+    <button type="button" onclick="harusLogin('<?= htmlspecialchars($redirect, ENT_QUOTES); ?>')">🛒</button>
+<?php endif; ?>
         </div>
         <br>
         <?php $i++; ?>
@@ -115,7 +122,14 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
                 <p>Siap tanam • Kualitas premium</p>
             </div>
 
-            <button>🛒</button>
+            <?php if ($isPembeli): ?>
+    <a href="keranjang/tambah.php?id=<?= $produk['id_produk']; ?>">
+        <button type="button">🛒</button>
+    </a>
+<?php else: ?>
+    <?php $redirect = "keranjang/tambah.php?id=" . $produk['id_produk']; ?>
+    <button type="button" onclick="harusLogin('<?= htmlspecialchars($redirect, ENT_QUOTES); ?>')">🛒</button>
+<?php endif; ?>
         </div>
         <br>
         <?php $j++; ?>
