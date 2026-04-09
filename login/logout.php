@@ -1,8 +1,11 @@
 <?php
 session_start();
+
 session_unset();
 session_destroy();
 
-header("Location: login.php?logout=1");
+setcookie("email", "", time() - 3600, "/");
+
+header("Location: login.php");
 exit;
 ?>

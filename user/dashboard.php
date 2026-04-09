@@ -1,26 +1,9 @@
 <?php
 include '../cek_login.php';
 cekRole('pembeli');
+
+$nama = $_SESSION['nama'];
+$role = $_SESSION['role'];
+
+include 'dashboard_view.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard User</title>
-</head>
-<body>
-    <h1>Dashboard Pembeli</h1>
-    <p>Halo, <?= $_SESSION['nama']; ?>!</p>
-    <p>Role: <?= $_SESSION['role']; ?></p>
-
-    <ul>
-        <li>Lihat Produk</li>
-        <li>Keranjang</li>
-        <li>Pesanan Saya</li>
-    </ul>
-
-    <button onclick="konfirmasiLogout()">Logout</button>
-    <script src="../assets/js/script.js"></script>
-</body>
-</html>
