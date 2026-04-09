@@ -11,9 +11,9 @@
     <p>Role: <?= $role; ?></p>
 
     <ul>
-        <li>Lihat Produk</li>
-        <li>Keranjang</li>
-        <li>Pesanan Saya</li>
+        <li><a href="produk.php">Lihat Produk</a></li>
+        <li><a href="keranjang.php">Keranjang</a></li>
+        <li><a href="pesanan_saya.php">Pesanan Saya</a></li>
     </ul>
 
     <button onclick="konfirmasiLogout('/FLOMART-ets/login/logout.php')">Logout</button>
