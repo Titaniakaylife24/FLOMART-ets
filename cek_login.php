@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $timeout = 60;
 
@@ -18,7 +20,8 @@ if (isset($_SESSION['id_user'])) {
 
 function harusLogin() {
     if (!isset($_SESSION['id_user'])) {
-        header("Location: /FLOMART-ets/login/login.php");
+        $redirect = urlencode($_SERVER['REQUEST_URI']);
+        header("Location: /FLOMART-ets/login/login.php?redirect=$redirect");
         exit;
     }
 }
@@ -26,8 +29,8 @@ function harusLogin() {
 function cekRole($role) {
     harusLogin();
 
-    if ($_SESSION['role'] != $role) {
-        echo "Akses ditolak!";
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== $role) {
+        header("Location: /FLOMART-ets/login/login.php");
         exit;
     }
 }
