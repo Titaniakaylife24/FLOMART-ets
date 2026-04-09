@@ -34,6 +34,8 @@ function getEmoji($namaProduk) {
 <body>
 
 <h1>Selamat datang, <?= htmlspecialchars($nama); ?>!</h1>
+<button onclick="konfirmasiLogout()">Logout</button>
+<script src="../assets/js/script.js"></script>
 
 <!-- REKOMENDASI -->
 <h2>Rekomendasi Benih Berkualitas</h2>
