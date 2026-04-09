@@ -1,5 +1,5 @@
 function konfirmasiLogout(urlLogout) {
     if (confirm("Apakah Anda yakin ingin logout?")) {
-        window.location.href = "../login/logout.php";
+        window.location.href = urlLogout;
     }
 }
