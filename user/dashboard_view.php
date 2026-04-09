@@ -9,6 +9,30 @@
     <h1>Selamat datang, <?= $nama; ?>!</h1>
     <p>Role: <?= $role; ?></p>
 
+    <h2>Rekomendasi Benih Berkualitas</h2>
+    <p>Produk pilihan FLOMART dengan stok tersedia dan kategori beragam.</p>
+
+    <?php if (mysqli_num_rows($resultRekomendasi) > 0): ?>
+       <div style="display:flex; flex-wrap:wrap; gap:20px; margin-bottom:40px;">
+            <?php while ($rekom = mysqli_fetch_assoc($resultRekomendasi)): ?>
+                <div style="border:1px solid #ccc; padding:15px; width:220px; border-radius:10px;">
+                    <p><strong><?= $rekom['nama_kategori']; ?></strong></p>
+                    <h3><?= $rekom['nama_produk']; ?></h3>
+                    <p>Rp <?= number_format($rekom['harga'], 0, ',', '.'); ?></p>
+                    <p>Stok: <?= $rekom['stok']; ?></p>
+
+                    <?php if (!empty($rekom['gambar'])): ?>
+                        <img src="../assets/img/<?= $rekom['gambar']; ?>" width="120">
+                    <?php else: ?>
+                        <p>Tidak ada gambar</p>
+                    <?php endif; ?>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    <?php else: ?>
+        <p>Belum ada produk rekomendasi.</p>
+    <?php endif; ?>
+    
     <h2>Kategori Produk</h2>
     <ul>
     <li>
