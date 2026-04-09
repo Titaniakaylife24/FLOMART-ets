@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<!-- JUDUL -->
+
+<h1>Selamat datang, <?= $nama; ?>!</h1>
 <h1>Pilihan Benih Terbaik</h1>
 <p>Pilih produk berdasarkan kategori yang kamu inginkan.</p>
 
@@ -27,16 +28,34 @@
 <div>
 
 <?php
+// 🔥 TARUH HELPER DI SINI
+
 function getBadge($index) {
-    $badges = ['Best Seller', 'Terlaris', 'Hemat', 'Premium'];
+    $badges = ['Best Seller', 'Terlaris', 'Hemat', 'Premium', 'Populer'];
     return $badges[$index % count($badges)];
 }
 
 function getRating($index) {
-    $ratings = ['4.8', '4.9', '4.6', '4.8'];
+    $ratings = ['4.8', '4.9', '4.6', '4.8', '4.5'];
     return $ratings[$index % count($ratings)];
 }
+
+function getEmoji($namaProduk) {
+    $nama = strtolower($namaProduk);
+
+    if (str_contains($nama, 'kubis')) return '🥬';
+    if (str_contains($nama, 'sawi')) return '🥗';
+    if (str_contains($nama, 'labu')) return '🎃';
+    if (str_contains($nama, 'tomat')) return '🍅';
+    if (str_contains($nama, 'jagung')) return '🌽';
+    if (str_contains($nama, 'mint')) return '🌿';
+    if (str_contains($nama, 'mawar')) return '🌹';
+    if (str_contains($nama, 'kelengkeng')) return '🥭';
+
+    return '🌱';
+}
 ?>
+
 
 <?php $i = 0; ?>
 <?php while ($produk = mysqli_fetch_assoc($resultProduk)): ?>
