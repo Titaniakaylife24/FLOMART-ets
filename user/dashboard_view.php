@@ -11,11 +11,21 @@
 
     <h2>Kategori Produk</h2>
     <ul>
-        <li><a href="dashboard.php">Semua</a></li>
-        <?php while ($kategori = mysqli_fetch_assoc($resultKategori)): ?>
-            <li><?= $kategori['nama_kategori']; ?></li>
-        <?php endwhile; ?>
-    </ul>
+    <li>
+        <a href="dashboard.php" <?= ($id_kategori == 0) ? 'style="font-weight:bold; color:green;"' : ''; ?>>
+            Semua
+        </a>
+    </li>
+
+    <?php while ($kategori = mysqli_fetch_assoc($resultKategori)): ?>
+        <li>
+            <a href="dashboard.php?kategori=<?= $kategori['id_kategori']; ?>"
+               <?= ($id_kategori == $kategori['id_kategori']) ? 'style="font-weight:bold; color:green;"' : ''; ?>>
+                <?= $kategori['nama_kategori']; ?>
+            </a>
+        </li>
+    <?php endwhile; ?>
+</ul>
 
     <h2>Produk FLOMART</h2>
 
