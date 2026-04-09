@@ -1,6 +1,7 @@
 <?php
 include '../cek_login.php';
 cekRole('pembeli');
+include '../koneksi/koneksi.php';
 
 $nama = $_SESSION['nama'];
 $role = $_SESSION['role'];
