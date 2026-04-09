@@ -76,7 +76,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
                  </a>
             <?php else: ?>
             <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $rekom['id_produk']); ?>
-                <button type="button" onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')">🛒</button>
+<button type="button" onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')">🛒</button>
 <?php endif; ?>
         </div>
         <br>
@@ -128,13 +128,19 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
                 </a>
             <?php else: ?>
             <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $produk['id_produk']); ?>
-                <button type="button" onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')">🛒</button>
+<button type="button" onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')">🛒</button>
 <?php endif; ?>
         </div>
         <br>
         <?php $j++; ?>
     <?php endwhile; ?>
 </div>
-
+    <script>
+    function konfirmasiLogin(loginUrl) {
+    if (confirm("Anda harus login terlebih dahulu. Login sekarang?")) {
+        window.location.href = loginUrl;
+    }
+}
+</script>
 </body>
 </html>
