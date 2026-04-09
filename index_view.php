@@ -94,7 +94,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
     <a href="dashboard.php"><strong>Semua</strong></a>
 
     <?php while ($kategori = mysqli_fetch_assoc($resultKategori)): ?>
-        <a href="dashboard.php?kategori=<?= $kategori['id_kategori']; ?>">
+        <a href="/FLOMART-ets/index.php?kategori=<?= $kategori['id_kategori']; ?>">
             <?= htmlspecialchars($kategori['nama_kategori']); ?>
         </a>
     <?php endwhile; ?>

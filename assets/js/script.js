@@ -6,6 +6,6 @@ function konfirmasiLogout(urlLogout) {
 
 function harusLogin(redirectUrl) {
     if (confirm("Anda harus login terlebih dahulu. Login sekarang?")) {
-        window.location.href = "login/login.php?redirect=" + encodeURIComponent(redirectUrl);
+        window.location.href = "/FLOMART-ets/login/login.php?redirect=" + encodeURIComponent(redirectUrl);
     }
 }
