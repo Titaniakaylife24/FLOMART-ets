@@ -44,7 +44,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
     <a href="login/login.php">Login</a>
 <?php endif; ?>
 
-<script src="assets/js/script.js"></script>
+<script src="/FLOMART-ets/assets/js/script.js"></script>
 
 <!-- REKOMENDASI -->
 <h2>Rekomendasi Benih Berkualitas</h2>
