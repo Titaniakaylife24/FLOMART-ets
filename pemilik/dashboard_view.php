@@ -15,7 +15,7 @@
         <li>Produk Terlaris</li>
     </ul>
 
-    <button onclick="konfirmasiLogout()">Logout</button>
+    <button onclick="konfirmasiLogout('/FLOMART-ets/login/logout.php')">Logout</button>
 
     <script src="../assets/js/script.js"></script>
 </body>
