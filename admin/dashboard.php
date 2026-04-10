@@ -14,5 +14,9 @@ $queryProduk = "SELECT produk.*, kategori.nama_kategori
 
 $resultProduk = mysqli_query($conn, $queryProduk);
 
+if (!$resultProduk) {
+    die("Query produk gagal: " . mysqli_error($conn));
+}
+
 include 'dashboard_view.php';
 ?>
