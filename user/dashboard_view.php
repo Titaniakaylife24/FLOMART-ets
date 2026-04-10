@@ -83,7 +83,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
         </a>
 
         <a href="#" class="hover:text-green-600">Toko</a>
-        <a href="#" class="hover:text-green-600">Mulai Jualan</a>
+        <a href="/FLOMART-ets/admin/transit.php" class="hover:text-green-600">Mulai Jualan</a>
         <a href="#" class="hover:text-green-600">Blog</a>
         <a href="#" class="hover:text-green-600">Tentang Kami</a>
 

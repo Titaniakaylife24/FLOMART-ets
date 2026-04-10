@@ -27,7 +27,6 @@ if (isset($_POST['login'])) {
         }
 
         // KALAU ADA HALAMAN TUJUAN, BALIK KE SANA DULU
-         $redirect = $_POST['redirect'] ?? '';
         if (!empty($redirect)) {
             header("Location: " . $redirect);
             exit;

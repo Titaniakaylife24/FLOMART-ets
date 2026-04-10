@@ -3,7 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 
 // ambil redirect dari URL login
-$redirect = $_GET['redirect'] ?? '';
+$redirect = $_POST['redirect'] ?? ($_GET['redirect'] ?? '');
 
 // SESSION TIMEOUT 1 menit
 $timeout = 60;
