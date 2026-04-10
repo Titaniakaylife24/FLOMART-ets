@@ -35,11 +35,13 @@ if ($id_kategori > 0) {
                     FROM produk
                     JOIN kategori ON produk.id_kategori = kategori.id_kategori
                     WHERE produk.id_kategori = $id_kategori
+                    AND produk.stok > 0
                     ORDER BY produk.id_produk DESC";
 } else {
     $queryProduk = "SELECT produk.*, kategori.nama_kategori 
                     FROM produk
                     JOIN kategori ON produk.id_kategori = kategori.id_kategori
+                    WHERE produk.stok > 0
                     ORDER BY produk.id_produk DESC";
 }
 $resultProduk = mysqli_query($conn, $queryProduk);
