@@ -38,7 +38,7 @@ if (isset($_POST['login'])) {
         } elseif ($user['role'] == 'owner') {
             header("Location: ../pemilik/dashboard.php");
         } elseif ($user['role'] == 'pembeli') {
-            header("Location: ../user/dashboard.php");
+            header("Location: /FLOMART-ets/index.php");
         }
         exit;
 

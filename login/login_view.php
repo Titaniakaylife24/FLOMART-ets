@@ -42,7 +42,7 @@
             <?php endif; ?>
 
             <form action="proses_login.php" method="POST" class="space-y-4">
-                <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect ?? '') ?>">
+                <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect ?? '', ENT_QUOTES); ?>">
             <input type="email" name="email" placeholder="Email" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
             <input type="password" name="password" placeholder="Password" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br><br>
 

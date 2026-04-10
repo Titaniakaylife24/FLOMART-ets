@@ -2,6 +2,9 @@
 session_start();
 include '../koneksi/koneksi.php';
 
+// ambil redirect dari URL login
+$redirect = $_GET['redirect'] ?? '';
+
 // SESSION TIMEOUT 1 menit
 $timeout = 60;
 
@@ -38,6 +41,11 @@ if (!isset($_SESSION['id_user']) && isset($_COOKIE['email'])) {
 
 // REDIRECT JIKA SUDAH LOGIN
 if (isset($_SESSION['role'])) {
+    if (!empty($redirect)) {
+        header("Location: " . $redirect);
+        exit;
+    }
+
     if ($_SESSION['role'] == 'admin') {
         header("Location: ../admin/dashboard.php");
         exit;
@@ -45,7 +53,7 @@ if (isset($_SESSION['role'])) {
         header("Location: ../pemilik/dashboard.php");
         exit;
     } elseif ($_SESSION['role'] == 'pembeli') {
-        header("Location: ../user/dashboard.php");
+        header("Location: /FLOMART-ets/index.php");
         exit;
     }
 }
