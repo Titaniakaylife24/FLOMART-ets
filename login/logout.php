@@ -6,6 +6,6 @@ session_destroy();
 
 setcookie("email", "", time() - 3600, "/");
 
-header("Location: /FLOMART-ets/login/login.php");
+header("Location: /FLOMART-ets/user/dashboard.php");
 exit;
 ?>
