@@ -75,20 +75,21 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
     </div>
 
     <!-- NAVBAR -->
-    <nav class="border-t px-10 py-3 flex justify-center gap-10 text-gray-700 font-medium">
+<div class="px-10">
+    <nav class="border-t-2 border-gray-200 py-3 flex justify-center gap-10 text-gray-700 font-medium">
 
         <a href="/FLOMART-ets/user/dashboard.php"
         class="text-green-600 border-b-2 border-green-600 pb-1">
             Beranda
         </a>
 
-        <a href="#" class="hover:text-green-600">Toko</a>
-        <a href="/FLOMART-ets/admin/transit.php" class="hover:text-green-600">Mulai Jualan</a>
-        <a href="#" class="hover:text-green-600">Blog</a>
-        <a href="#" class="hover:text-green-600">Tentang Kami</a>
+        <a href="#">Toko</a>
+        <a href="/FLOMART-ets/admin/transit.php">Mulai Jualan</a>
+        <a href="#">Blog</a>
+        <a href="#">Tentang Kami</a>
 
     </nav>
-
+</div>
 </header>
 
 <!-- CONTENT -->
@@ -159,14 +160,16 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
 
                 <div class="flex justify-end">
                     <?php if ($isPembeli): ?>
-                        <a href="/FLOMART-ets/keranjang/tambah.php?id=<?= $rekom['id_produk']; ?>">
-                            <button class="bg-yellow-400 p-2 rounded-full hover:bg-yellow-500">🛒</button>
-                        </a>
+                         <button 
+                        onclick="openCartModal(<?= $rekom['id_produk']; ?>)"
+                         class="bg-yellow-400 p-2 rounded-full hover:bg-yellow-500">
+                        <img src="../assets/img/logoKeranjangPutih.png" width="23">
+                        </button>
                     <?php else: ?>
                         <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $rekom['id_produk']); ?>
                         <button onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')"
                         class="bg-yellow-400 p-2 rounded-full hover:bg-yellow-500">
-                            🛒
+                            <img src="../assets/img/logoKeranjangPutih.png" alt="keranjang putih" width="23">
                         </button>
                     <?php endif; ?>
                 </div>
@@ -234,14 +237,17 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
 
                 <div class="flex justify-end">
                     <?php if ($isPembeli): ?>
-                        <a href="/FLOMART-ets/keranjang/tambah.php?id=<?= $produk['id_produk']; ?>">
-                            <button class="bg-yellow-400 p-2 rounded-full hover:bg-yellow-500">🛒</button>
-                        </a>
+                       <button 
+                        onclick="openCartModal(<?= $produk['id_produk']; ?>)"
+                        class="bg-yellow-400 p-2 rounded-full hover:bg-yellow-500">
+                        <img src="../assets/img/logoKeranjangPutih.png" width="23">
+                        </button>
+
                     <?php else: ?>
                         <?php $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . urlencode("/FLOMART-ets/keranjang/tambah.php?id=" . $produk['id_produk']); ?>
                         <button onclick="konfirmasiLogin('<?= htmlspecialchars($loginUrl, ENT_QUOTES); ?>')"
                         class="bg-yellow-400 p-2 rounded-full hover:bg-yellow-500">
-                            🛒
+                        <img src="../assets/img/logoKeranjangPutih.png" alt="Keranjang putih" width="23">
                         </button>
                     <?php endif; ?>
                 </div>
@@ -268,7 +274,47 @@ function konfirmasiLogout(urlLogout) {
         window.location.href = urlLogout;
     }
 }
+
+function openCartModal(idProduk) {
+    document.getElementById('productId').value = idProduk;
+    document.getElementById('cartModal').classList.remove('hidden');
+}
+
+function closeCartModal() {
+    document.getElementById('cartModal').classList.add('hidden');
+}
 </script>
 
+<!-- CART MODAL -->
+<div id="cartModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    
+    <div class="bg-white rounded-xl p-6 w-80">
+
+        <h2 class="text-lg font-bold mb-4">Tambah ke Keranjang</h2>
+
+        <form method="GET" action="/FLOMART-ets/keranjang/tambah.php">
+
+            <input type="hidden" name="id" id="productId">
+
+            <label class="text-sm">Jumlah</label>
+            <input type="number" name="qty" value="1" min="1"
+                   class="w-full border rounded p-2 mb-4">
+
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeCartModal()"
+                        class="px-3 py-1 bg-gray-300 rounded">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="px-3 py-1 bg-green-600 text-white rounded">
+                    Tambah
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
 </body>
 </html>
