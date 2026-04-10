@@ -15,7 +15,7 @@
         <a href="#" class="hover:text-green-600">Chat</a>
         <a href="#" class="hover:text-green-600">Pesanan</a>
         <a href="#" class="hover:text-green-600">Notifikasi</a>
-        <a href="#" class="hover:text-green-600">Keranjang</a>
+        <a href="/FLOMART-ets/keranjang/index.php" class="hover:text-green-600">Keranjang</a>
     </nav>
 </header>
 

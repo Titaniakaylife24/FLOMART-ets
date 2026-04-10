@@ -25,6 +25,16 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
     <title>Dashboard FLOMART</title>
 </head>
 <body>
+<nav>
+    <a href="/FLOMART-ets/user/dashboard.php">Dashboard</a> |
+    
+    <?php if (isset($_SESSION['id_user'])): ?>
+        <a href="/FLOMART-ets/keranjang/index.php">Keranjang</a> |
+        <button onclick="konfirmasiLogout('/FLOMART-ets/login/logout.php')">Logout</button>
+    <?php else: ?>
+        <a href="/FLOMART-ets/login/login.php">Login</a>
+    <?php endif; ?>
+</nav>
 
 <h1>Selamat datang, <?= htmlspecialchars($nama); ?>!</h1>
 
