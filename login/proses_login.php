@@ -6,6 +6,7 @@ if (isset($_POST['login'])) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $redirect = $_POST['redirect'] ?? '';
 
     $query = "SELECT * FROM users WHERE email='$email' AND password='$password' LIMIT 1";
     $result = mysqli_query($conn, $query);
@@ -23,6 +24,12 @@ if (isset($_POST['login'])) {
         // COOKIE 1 menit
         if (isset($_POST['remember'])) {
             setcookie('email', $user['email'], time() + 60, "/");
+        }
+
+        // KALAU ADA HALAMAN TUJUAN, BALIK KE SANA DULU
+        if (!empty($redirect)) {
+            header("Location: " . $redirect);
+            exit;
         }
 
         // REDIRECT SESUAI ROLE
