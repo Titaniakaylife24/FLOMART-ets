@@ -2,7 +2,11 @@
 include '../cek_login.php';
 include '../koneksi/koneksi.php';
 
-harusLogin();
+if (!isset($_SESSION['id_user'])) {
+    $redirect = urlencode($_SERVER['REQUEST_URI']);
+    header("Location: ../login/login.php?redirect=$redirect");
+    exit;
+}
 
 if ($_SESSION['role'] !== 'pembeli') {
     header("Location: ../login/login.php");

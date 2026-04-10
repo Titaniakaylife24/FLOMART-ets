@@ -27,6 +27,7 @@ if (isset($_POST['login'])) {
         }
 
         // KALAU ADA HALAMAN TUJUAN, BALIK KE SANA DULU
+         $redirect = $_POST['redirect'] ?? '';
         if (!empty($redirect)) {
             header("Location: " . $redirect);
             exit;
@@ -38,7 +39,7 @@ if (isset($_POST['login'])) {
         } elseif ($user['role'] == 'owner') {
             header("Location: ../pemilik/dashboard.php");
         } elseif ($user['role'] == 'pembeli') {
-            header("Location: ../user/dashboard.php");
+            header("Location: /FLOMART-ets/index.php");
         }
         exit;
 
