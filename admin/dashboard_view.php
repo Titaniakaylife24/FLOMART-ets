@@ -13,7 +13,7 @@
     <p>
         <a href="/FLOMART-ets/admin/produk/tambah.php">Tambah Produk</a>
         <a href="/FLOMART-ets/admin/kategori/index.php">Kelola Kategori</a>
-        <a href="../login/logout.php">Logout</a>
+        <a href="../login/logout.php" class="btn-logout">Logout</a>
     </p>
 
     <table border="1" cellpadding="10" cellspacing="0">
