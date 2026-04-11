@@ -49,10 +49,11 @@ SELECT * FROM pesanan WHERE status_pesanan = 'menunggu'
             </p>
         </div>
 
-        <a href="/FLOMART-ets/login/logout.php"
-           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-           Logout
-        </a>
+        <button 
+    onclick="if(confirm('Apakah Anda yakin ingin logout?')) window.location.href='/FLOMART-ets/login/logout.php';"
+    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+    Logout
+</button>
 
     </div>
 </div>

@@ -1,5 +1,5 @@
 <?php
-include '../cek_login.php';
+include __DIR__ . '/../cek_login.php';
 include '../koneksi/koneksi.php';
 
 cekRole('admin');
