@@ -3,6 +3,7 @@ session_start();
 
 $isLogin = isset($_SESSION['id_user']);
 $role = $_SESSION['role'] ?? 'guest';
+$nama = $_SESSION['nama'] ?? 'Guest';
 
 if ($isLogin && $role === 'admin') {
     header("Location: /FLOMART-ets/admin/dashboard.php");
@@ -59,8 +60,8 @@ $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . $redirect;
 <div class="pt-32 px-10 max-w-7xl mx-auto">
 
     <section class="mb-6 mt-10">
-        <h1 class="text-2xl font-bold">
-            Selamat datang, Guest!
+        <h1 class="text-4xl font-bold">
+            Selamat datang, <?= htmlspecialchars($nama); ?>!
         </h1>
     </section>
 
