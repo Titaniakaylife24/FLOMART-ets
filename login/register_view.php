@@ -49,7 +49,24 @@
         <form action="proses_register.php" method="POST" class="space-y-4">
         <input type="text" name="nama" placeholder="Nama lengkap" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
         <input type="email" name="email" placeholder="Email" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
-        <input type="password" name="password" placeholder="Password" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
+        <div class="relative">
+    <input 
+        type="password" 
+        name="password" 
+        id="registerPassword"
+        placeholder="Password" 
+        required 
+        class="w-full border rounded-lg px-4 py-2 pr-12 focus:ring-2 focus:ring-green-500 outline-none"
+    >
+
+    <img 
+        src="../assets/img/eye-close.png"
+        id="registerEye"
+        onclick="togglePassword('registerPassword', 'registerEye')"
+        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 cursor-pointer"
+        alt="Toggle Password"
+    >
+</div>
         <textarea name="alamat" placeholder="Alamat" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"></textarea><br>
         <input type="text" name="no_hp" placeholder="No HP" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
         <button type="submit" name="register" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-lg">Daftar</button>
@@ -129,5 +146,21 @@
 </div>
 
 </footer>
+
+<script>
+function togglePassword(inputId, eyeId) {
+    const input = document.getElementById(inputId);
+    const eye = document.getElementById(eyeId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        eye.src = "../assets/img/kebuka.png";
+    } else {
+        input.type = "password";
+        eye.src = "../assets/img/ketutup3.png";
+    }
+}
+</script>
+
 </body>
 </html>
