@@ -11,7 +11,7 @@ if ($isLogin && $role === 'admin') {
 }
 
 $redirect = urlencode('/FLOMART-ets/admin/dashboard.php');
-$loginUrl = "/FLOMART-ets/login/login.php?redirect=" . $redirect;
+$loginUrl = "/FLOMART-ets/login/login.php?admin=1&redirect=" . $redirect;
 ?>
 
 <!DOCTYPE html>
@@ -36,14 +36,28 @@ $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . $redirect;
                 <a href="#" class="hover:text-green-600">Notifikasi</a>
 
                 <div class="w-6 h-6 rounded-full border-2 border-green-500 flex items-center justify-center text-green-600 text-xs">
-                    G
+                    <?= strtoupper(substr($nama, 0, 1)); ?>
                 </div>
             </nav>
 
-            <a href="/FLOMART-ets/login/login.php"
-               class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                Login
-            </a>
+            <?php if ($isLogin): ?>
+    <button onclick="konfirmasiLogout('/FLOMART-ets/login/logout.php')"
+        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+        Logout
+    </button>
+<?php else: ?>
+    <?php if ($isLogin): ?>
+    <button onclick="konfirmasiLogout('/FLOMART-ets/login/logout.php')"
+        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+        Logout
+    </button>
+<?php else: ?>
+    <a href="/FLOMART-ets/login/login.php"
+       class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+        Login
+    </a>
+<?php endif; ?>
+<?php endif; ?>
         </div>
     </div>
 
@@ -79,10 +93,21 @@ $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . $redirect;
                     Masuk sebagai admin untuk menambahkan produk, mengatur stok, memantau pesanan, dan mengelola penjualan toko Anda di FLOMART.
                 </p>
 
-                <a href="<?= htmlspecialchars($loginUrl); ?>"
-                   class="inline-block bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 font-semibold shadow-md transition">
-                    Login
-                </a>
+                <?php if (!$isLogin): ?>
+    <a href="<?= htmlspecialchars($loginUrl); ?>"
+       class="inline-block bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 font-semibold shadow-md transition">
+        Login
+    </a>
+<?php elseif ($role === 'pembeli'): ?>
+    <a href="<?= htmlspecialchars($loginUrl); ?>"
+       class="inline-block bg-yellow-400 text-black px-6 py-3 rounded-xl hover:bg-yellow-500 font-semibold shadow-md transition">
+        Login sebagai Admin
+    </a>
+
+    <p class="text-sm text-gray-600 mt-3">
+        Anda sedang login sebagai pembeli. Silakan login dengan akun admin untuk mengakses dashboard admin.
+    </p>
+<?php endif; ?>
             </div>
 
             <div class="relative">
@@ -167,6 +192,14 @@ $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . $redirect;
 </footer>
     
 </div>
+
+<script>
+function konfirmasiLogout(urlLogout) {
+    if (confirm("Apakah Anda yakin ingin logout?")) {
+        window.location.href = urlLogout;
+    }
+}
+</script>
 
 </body>
 </html>

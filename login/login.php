@@ -4,6 +4,7 @@ include '../koneksi/koneksi.php';
 
 // ambil redirect dari URL login
 $redirect = $_POST['redirect'] ?? ($_GET['redirect'] ?? '');
+$loginAdmin = isset($_GET['admin']) && $_GET['admin'] == '1';
 
 // SESSION TIMEOUT 1 menit
 $timeout = 60;
@@ -40,7 +41,8 @@ if (!isset($_SESSION['id_user']) && isset($_COOKIE['email'])) {
 }
 
 // REDIRECT JIKA SUDAH LOGIN
-if (isset($_SESSION['role'])) {
+// KECUALI kalau memang sedang buka login admin
+if (isset($_SESSION['role']) && !$loginAdmin) {
     if (!empty($redirect)) {
         header("Location: " . $redirect);
         exit;
