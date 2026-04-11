@@ -53,7 +53,12 @@
         <textarea name="alamat" placeholder="Alamat" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"></textarea><br>
         <input type="text" name="no_hp" placeholder="No HP" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
         <button type="submit" name="register" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-lg">Daftar</button>
-        <p>Sudah punya akun? <a href="login.php">Login</a></p>
+        <p class="text-sm text-gray-600">
+            Sudah punya akun? 
+        <a href="login.php" class="text-green-600 font-semibold hover:underline hover:text-green-700">
+            Login
+        </a>
+</p>
     </form>
         </div>
     </div>

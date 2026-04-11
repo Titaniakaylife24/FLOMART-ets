@@ -52,7 +52,12 @@
 
             <button type="submit" name="login" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-lg">Login</button>
 
-             <p>Belum punya akun? <a href="register.php">Daftar</a></p>
+             <p class="text-sm text-gray-600">
+                Belum punya akun? 
+            <a href="register.php" class="text-green-600 font-semibold hover:underline hover:text-green-700">
+                Daftar
+            </a>
+</p>
             </form>
         </div>
     </div>
