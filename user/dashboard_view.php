@@ -1,22 +1,86 @@
 <?php
-function getEmoji($namaProduk) {
-    $nama = strtolower($namaProduk);
+include __DIR__ . '/../cek_login.php';
+include __DIR__ . '/../koneksi/koneksi.php';
 
-    if (strpos($nama, 'kubis') !== false) return '🥬';
-    if (strpos($nama, 'sawi') !== false) return '🥗';
-    if (strpos($nama, 'labu') !== false) return '🎃';
-    if (strpos($nama, 'tomat') !== false) return '🍅';
-    if (strpos($nama, 'jagung') !== false) return '🌽';
-    if (strpos($nama, 'mint') !== false) return '🌿';
-    if (strpos($nama, 'mawar') !== false) return '🌹';
-    if (strpos($nama, 'kelengkeng') !== false) return '🥭';
-
-    return '🌱';
-}
-
+// SESSION DATA
+$nama = $_SESSION['nama'] ?? 'Guest';
 $isLogin = isset($_SESSION['id_user']);
 $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
+
+// KATEGORI HARUS DIAMBIL DULU
+$kategoriAktif = $_GET['kategori'] ?? null;
+
+// FILTER
+$where = "";
+if (!empty($kategoriAktif)) {
+    $id_kategori = (int)$kategoriAktif;
+    $where = "WHERE produk.id_kategori = $id_kategori";
+}
+
+// QUERY PRODUK
+$queryProduk = "SELECT 
+    produk.*, 
+    kategori.nama_kategori,
+    COALESCE(SUM(detail_pesanan.qty), 0) AS total_terjual
+FROM produk
+JOIN kategori ON produk.id_kategori = kategori.id_kategori
+LEFT JOIN detail_pesanan 
+    ON produk.id_produk = detail_pesanan.id_produk
+$where
+GROUP BY produk.id_produk
+ORDER BY produk.id_produk DESC
+";
+
+$resultProduk = mysqli_query($conn, $queryProduk);
+
+if (!$resultProduk) {
+    die("Query produk error: " . mysqli_error($conn));
+}
+
+// QUERY KATEGORI
+$queryKategori = "SELECT * FROM kategori ORDER BY nama_kategori ASC";
+$resultKategori = mysqli_query($conn, $queryKategori);
+
+if (!$resultKategori) {
+    die("Query kategori error: " . mysqli_error($conn));
+}
+
+// QUERY REKOMENDASI
+$queryRekom = "SELECT 
+    produk.*, 
+    kategori.nama_kategori, 
+    COALESCE(SUM(detail_pesanan.qty), 0) AS total_terjual
+FROM produk
+JOIN kategori ON produk.id_kategori = kategori.id_kategori
+LEFT JOIN detail_pesanan 
+    ON produk.id_produk = detail_pesanan.id_produk
+GROUP BY produk.id_produk
+ORDER BY total_terjual DESC
+LIMIT 4
+";
+
+$resultRekomendasi = mysqli_query($conn, $queryRekom);
+
+if (!$resultRekomendasi) {
+    die("Query rekomendasi error: " . mysqli_error($conn));
+}
+
+//keranjang
+$jumlahKeranjang = 0;
+
+if ($isLogin) {
+    $id_user = $_SESSION['id_user'];
+
+    $queryKeranjang = "SELECT SUM(jumlah) as total FROM keranjang WHERE id_user = $id_user";
+    $resultKeranjang = mysqli_query($conn, $queryKeranjang);
+
+    if ($resultKeranjang) {
+        $dataKeranjang = mysqli_fetch_assoc($resultKeranjang);
+        $jumlahKeranjang = (int) ($dataKeranjang['total'] ?? 0);
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -24,11 +88,17 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard FLOMART</title>
-
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="/FLOMART-ets/assets/css/style.css">
 </head>
 
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans scroll-smooth">
+
+<?php if (isset($_GET['success'])): ?>
+    <script>
+        alert("Produk berhasil ditambahkan ke keranjang!");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    </script>
+<?php endif; ?>
 
 <!-- HEADER -->
 <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md shadow z-50">
@@ -44,11 +114,13 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
             <nav class="flex items-center gap-6 text-gray-700 font-medium text-sm">
 
                 <a href="#" class="hover:text-green-600">Chat</a>
-                <a href="#" class="hover:text-green-600">Pesanan</a>
+                <a href="/FLOMART-ets/user/pesanan_saya.php" class="hover:text-green-600">Pesanan</a>
                 <a href="#" class="hover:text-green-600">Notifikasi</a>
 
                 <?php if ($isLogin): ?>
-                    <a href="/FLOMART-ets/keranjang/index.php" class="hover:text-green-600">Keranjang</a>
+                    <a href="/FLOMART-ets/keranjang/index.php" class="hover:text-green-600">
+                    Keranjang (<?= $jumlahKeranjang; ?>)
+                    </a>
                 <?php endif; ?>
 
                 <!-- Avatar -->
@@ -138,10 +210,17 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
             
             <div class="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
 
-                <div class="text-5xl text-center mb-4">
-                    <?= getEmoji($rekom['nama_produk']); ?>
-                </div>
+              <?php 
+$gambarRekom = !empty($rekom['gambar']) 
+    ? "/FLOMART-ets/uploads/produk/" . basename($rekom['gambar']) 
+    : "/FLOMART-ets/assets/img/no-image.png";
+?>
 
+<div class="mb-4">
+    <img src="<?= htmlspecialchars($gambarRekom); ?>" 
+     class="w-full h-40 object-cover rounded-lg"
+     onerror="this.src='/FLOMART-ets/assets/img/no-image.png'">
+</div>
                 <p class="text-xs text-gray-400">
                     <?= htmlspecialchars($rekom['nama_kategori']); ?>
                 </p>
@@ -182,32 +261,47 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
 
     </section>
 
-    <!-- KATEGORI -->
-    <section class="mb-10">
+   <!-- KATEGORI -->
+<section class="mb-10">
 
-        <h2 class="text-2xl font-bold mb-2">Pilihan Benih Terbaik</h2>
-        <p class="text-gray-500 mb-4">Pilih produk berdasarkan kategori yang kamu inginkan.</p>
+    <h2 class="text-2xl font-bold mb-2">Pilihan Benih Terbaik</h2>
+    <p class="text-gray-500 mb-4">Pilih produk berdasarkan kategori yang kamu inginkan.</p>
 
-        <div class="flex gap-3 flex-wrap">
+    <div class="flex gap-3 flex-wrap">
 
-            <a href="/FLOMART-ets/user/dashboard.php"
-            class="px-4 py-2 bg-green-600 text-white rounded-full text-sm">
-                Semua
+        <!-- Semua -->
+       <?php $isAllActive = ($kategoriAktif == null); ?>
+
+        <a href="/FLOMART-ets/user/dashboard.php#produk"
+        class="px-4 py-2 rounded-full text-sm transition border
+        <?= $isAllActive 
+        ? 'bg-green-600 text-white border-green-600' 
+        : 'bg-white border-gray-200 hover:bg-green-100 hover:text-green-700' ?>">
+        Semua
+        </a>
+
+        <!-- LOOP KATEGORI -->
+        <?php while ($kategori = mysqli_fetch_assoc($resultKategori)): ?>
+
+            <?php 
+                $isActive = ($kategoriAktif == $kategori['id_kategori']);
+            ?>
+
+            <a href="/FLOMART-ets/user/dashboard.php?kategori=<?= $kategori['id_kategori']; ?>#produk"
+               class="px-4 py-2 rounded-full text-sm transition border
+               <?= $isActive 
+                    ? 'bg-green-600 text-white border-green-600' 
+                    : 'bg-white border-gray-200 hover:bg-green-100 hover:text-green-700' ?>">
+                <?= htmlspecialchars($kategori['nama_kategori']); ?>
             </a>
 
-            <?php while ($kategori = mysqli_fetch_assoc($resultKategori)): ?>
-                <a href="/FLOMART-ets/user/dashboard.php?kategori=<?= $kategori['id_kategori']; ?>"
-                class="px-4 py-2 bg-white border rounded-full text-sm hover:bg-green-50">
-                    <?= htmlspecialchars($kategori['nama_kategori']); ?>
-                </a>
-            <?php endwhile; ?>
+        <?php endwhile; ?>
 
-        </div>
+    </div>
 
-    </section>
-
+</section>
     <!-- PRODUK -->
-    <section>
+    <section id="produk" class="mb-32">
 
         <div class="grid grid-cols-4 gap-6">
 
@@ -215,10 +309,17 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
 
             <div class="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
 
-                <div class="text-5xl text-center mb-4">
-                    <?= getEmoji($produk['nama_produk']); ?>
-                </div>
+             <?php 
+$gambarProduk = !empty($produk['gambar']) 
+    ? "/FLOMART-ets/uploads/produk/" . basename($produk['gambar']) 
+    : "/FLOMART-ets/assets/img/no-image.png";
+?>
 
+<div class="mb-4">
+    <img src="<?= htmlspecialchars($gambarProduk); ?>?v=<?= time(); ?>" 
+    class="w-full h-40 object-cover rounded-lg"
+    onerror="this.src='/FLOMART-ets/assets/img/no-image.png'">
+</div>
                 <p class="text-xs text-gray-400">
                     <?= htmlspecialchars($produk['nama_kategori']); ?>
                 </p>
@@ -232,7 +333,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
                 </p>
 
                 <p class="text-xs text-gray-400 mb-3">
-                    Siap tanam • Kualitas premium
+                    Terjual: <?= (int)$produk['total_terjual']; ?>
                 </p>
 
                 <div class="flex justify-end">
@@ -292,7 +393,7 @@ function closeCartModal() {
 
         <h2 class="text-lg font-bold mb-4">Tambah ke Keranjang</h2>
 
-        <form method="GET" action="/FLOMART-ets/keranjang/tambah.php">
+        <form method="POST" action="/FLOMART-ets/keranjang/tambah.php">
 
             <input type="hidden" name="id" id="productId">
 
@@ -316,5 +417,70 @@ function closeCartModal() {
 
     </div>
 </div>
+
+<!--Footer-->
+   <footer class="bg-green-700 text-white py-14 mt-10">
+    <div class="max-w-7xl mx-auto px-10">
+        <div class="grid grid-cols-4 gap-10">
+ <!-- BRAND -->
+    <div>
+        <img src="../assets/img/contrasLogoFlomart.png" width="150">
+
+        <p class="text-sm mb-4">
+            Marketplace tanaman ramah lingkungan terpercaya
+        </p>
+
+        <div class="flex">
+            <input type="email"
+            placeholder="Write Email"
+            class="px-3 py-2 rounded-l-lg text-black w-full bg-white">
+
+            <button class="bg-yellow-400 px-4 rounded-r-lg">
+                ➤
+            </button>
+        </div>
+
+        <p class="text-xs mt-6">
+            Copyright <br>
+            © 2025 FLOMART. All rights reserved. <br>
+            Grow green, live better.
+        </p>
+    </div>
+
+    <!-- LAYANAN -->
+    <div>
+        <h3 class="font-semibold mb-4">Layanan</h3>
+        <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:underline">Belanja Tanaman</a></li>
+            <li><a href="#" class="hover:underline">Bibit & Media Tanaman</a></li>
+            <li><a href="#" class="hover:underline">Filter Kecocokan Tanaman</a></li>
+            <li><a href="#" class="hover:underline">Start Sell (jual tanaman)</a></li>
+        </ul>
+    </div>
+
+    <!-- BANTUAN -->
+    <div>
+        <h3 class="font-semibold mb-4">Bantuan</h3>
+        <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:underline">Cara Belanja</a></li>
+            <li><a href="#" class="hover:underline">Cara Menjual Tanaman</a></li>
+            <li><a href="#" class="hover:underline">Pengiriman & Perawatan</a></li>
+            <li><a href="#" class="hover:underline">Kebijakan Pengembalian</a></li>
+        </ul>
+    </div>
+
+    <!-- SOSIAL -->
+    <div>
+        <h3 class="font-semibold mb-4">Ikuti Kami</h3>
+        <ul class="space-y-2 text-sm">
+            <li>Instagram - @flomart.id</li>
+            <li>Facebook - FLOMART</li>
+            <li>Twitter/X - @flomart_id</li>
+        </ul>
+    </div>
+
+        </div>
+    </div>
+</footer>
 </body>
 </html>

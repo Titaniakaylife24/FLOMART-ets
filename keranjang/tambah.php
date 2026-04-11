@@ -2,20 +2,23 @@
 include '../cek_login.php';
 include '../koneksi/koneksi.php';
 
+// ek login
 if (!isset($_SESSION['id_user'])) {
-    $redirect = urlencode($_SERVER['REQUEST_URI']);
-    header("Location: ../login/login.php?redirect=$redirect");
+    header("Location: ../login/login.php");
     exit;
 }
 
+// hanya pembeli
 if ($_SESSION['role'] !== 'pembeli') {
     header("Location: ../login/login.php");
     exit;
 }
 
 $id_user = $_SESSION['id_user'];
-$id_produk = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$qty = isset($_GET['qty']) ? (int) $_GET['qty'] : 1;
+
+// pakai POST (lebih aman)
+$id_produk = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+$qty = isset($_POST['qty']) ? (int) $_POST['qty'] : 1;
 
 // validasi qty
 if ($qty < 1) {
@@ -23,49 +26,57 @@ if ($qty < 1) {
 }
 
 if ($id_produk <= 0) {
-    header("Location: ../index.php");
+    header("Location: ../user/dashboard.php");
     exit;
 }
 
-// cek produk valid
-$queryProduk = "SELECT * FROM produk WHERE id_produk = $id_produk AND stok > 0";
-$resultProduk = mysqli_query($conn, $queryProduk);
+// ambil produk + stok
+$stmt = $conn->prepare("SELECT stok FROM produk WHERE id_produk = ?");
+$stmt->bind_param("i", $id_produk);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if (mysqli_num_rows($resultProduk) === 0) {
-    header("Location: ../index.php");
+if ($result->num_rows === 0) {
+    header("Location: ../user/dashboard.php");
     exit;
 }
 
-// cek apakah produk sudah ada di keranjang user
-$queryCek = "SELECT * FROM keranjang 
-             WHERE id_user = $id_user 
-             AND id_produk = $id_produk";
+$produk = $result->fetch_assoc();
+$stok = (int)$produk['stok'];
 
-$resultCek = mysqli_query($conn, $queryCek);
+// kalau qty melebihi stok
+if ($qty > $stok) {
+    $qty = $stok;
+}
 
-if (mysqli_num_rows($resultCek) > 0) {
+// cek keranjang
+$stmt = $conn->prepare("SELECT id_keranjang, jumlah FROM keranjang WHERE id_user = ? AND id_produk = ?");
+$stmt->bind_param("ii", $id_user, $id_produk);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    $data = mysqli_fetch_assoc($resultCek);
+if ($result->num_rows > 0) {
 
-    // 🔥 update pakai qty dari modal
+    $data = $result->fetch_assoc();
     $jumlahBaru = $data['jumlah'] + $qty;
 
-    $update = "UPDATE keranjang 
-               SET jumlah = $jumlahBaru 
-               WHERE id_keranjang = " . $data['id_keranjang'];
+    //  jangan lebih dari stok
+    if ($jumlahBaru > $stok) {
+        $jumlahBaru = $stok;
+    }
 
-    mysqli_query($conn, $update);
+    $stmt = $conn->prepare("UPDATE keranjang SET jumlah = ? WHERE id_keranjang = ?");
+    $stmt->bind_param("ii", $jumlahBaru, $data['id_keranjang']);
+    $stmt->execute();
 
 } else {
 
-    // 🔥 insert pakai qty dari modal
-    $insert = "INSERT INTO keranjang (id_user, id_produk, jumlah) 
-               VALUES ($id_user, $id_produk, $qty)";
-
-    mysqli_query($conn, $insert);
+    $stmt = $conn->prepare("INSERT INTO keranjang (id_user, id_produk, jumlah) VALUES (?, ?, ?)");
+    $stmt->bind_param("iii", $id_user, $id_produk, $qty);
+    $stmt->execute();
 }
 
-// kembali ke halaman sebelumnya (lebih enak UX)
-header("Location: ../user/dashboard.php");
+// redirect balik
+header("Location: ../user/dashboard.php?success=1");
 exit;
 ?>

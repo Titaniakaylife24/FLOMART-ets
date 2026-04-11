@@ -4,108 +4,139 @@ include __DIR__ . '/../../koneksi/koneksi.php';
 
 cekRole('admin');
 
-$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$id = $_GET['id'];
 
-if ($id <= 0) {
-    die("ID produk tidak valid.");
+$produk = mysqli_fetch_assoc(mysqli_query($conn,
+"SELECT * FROM produk WHERE id_produk=$id"));
+
+$resultKategori = mysqli_query($conn,"SELECT * FROM kategori");
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+$gambar = $produk['gambar'];
+
+if ($_FILES['gambar']['error'] == 0) {
+
+$folder = __DIR__ . '/../../uploads/produk/';
+$ext = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+$namaBaru = uniqid().'.'.$ext;
+
+move_uploaded_file($_FILES['gambar']['tmp_name'],$folder.$namaBaru);
+
+$gambar = $namaBaru;
 }
 
-$queryProduk = "SELECT * FROM produk WHERE id_produk = $id LIMIT 1";
-$resultProduk = mysqli_query($conn, $queryProduk);
-$produk = mysqli_fetch_assoc($resultProduk);
+mysqli_query($conn,"UPDATE produk SET
+id_kategori='$_POST[id_kategori]',
+nama_produk='$_POST[nama_produk]',
+harga='$_POST[harga]',
+stok='$_POST[stok]',
+deskripsi='$_POST[deskripsi]',
+gambar='$gambar'
+WHERE id_produk=$id");
 
-if (!$produk) {
-    die("Produk tidak ditemukan.");
-}
-
-$queryKategori = "SELECT * FROM kategori ORDER BY nama_kategori ASC";
-$resultKategori = mysqli_query($conn, $queryKategori);
-
-$error = '';
-
-if (isset($_POST['update'])) {
-    $id_kategori = (int) $_POST['id_kategori'];
-    $nama_produk = mysqli_real_escape_string($conn, $_POST['nama_produk']);
-    $harga = (float) $_POST['harga'];
-    $stok = (int) $_POST['stok'];
-    $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
-    $gambar = mysqli_real_escape_string($conn, $_POST['gambar']);
-
-    $queryUpdate = "UPDATE produk
-                    SET id_kategori='$id_kategori',
-                        nama_produk='$nama_produk',
-                        harga='$harga',
-                        stok='$stok',
-                        deskripsi='$deskripsi',
-                        gambar='$gambar'
-                    WHERE id_produk='$id'";
-
-    $update = mysqli_query($conn, $queryUpdate);
-
-    if ($update) {
-        header("Location: /FLOMART-ets/admin/produk/index.php");
-        exit;
-    } else {
-        $error = "Gagal mengupdate produk.";
-    }
-}
+header("Location: /FLOMART-ets/admin/dashboard_view.php");header("Location: /FLOMART-ets/admin/dashboard_view.php");
+exit;}
 ?>
 
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Edit Produk</title>
+    <link rel="stylesheet" href="/FLOMART-ets/assets/css/style.css">
 </head>
-<body>
 
-    <h1>Edit Produk</h1>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
 
-    <?php if (!empty($error)): ?>
-        <p><?= htmlspecialchars($error); ?></p>
-    <?php endif; ?>
+    <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+            Edit Produk
+        </h1>
 
-    <form method="POST">
-        <p>
-            <label>Kategori</label><br>
-            <select name="id_kategori" required>
-                <?php while ($kategori = mysqli_fetch_assoc($resultKategori)): ?>
-                    <option value="<?= $kategori['id_kategori']; ?>"
-                        <?= $kategori['id_kategori'] == $produk['id_kategori'] ? 'selected' : ''; ?>>
-                        <?= htmlspecialchars($kategori['nama_kategori']); ?>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Kategori
+                </label>
+                <select name="id_kategori"
+                    class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <?php while($k=mysqli_fetch_assoc($resultKategori)): ?>
+                    <option value="<?= $k['id_kategori']; ?>"
+                    <?= $k['id_kategori']==$produk['id_kategori']?'selected':'' ?>>
+                        <?= $k['nama_kategori']; ?>
                     </option>
-                <?php endwhile; ?>
-            </select>
-        </p>
+                    <?php endwhile; ?>
+                </select>
+            </div>
 
-        <p>
-            <label>Nama Produk</label><br>
-            <input type="text" name="nama_produk" value="<?= htmlspecialchars($produk['nama_produk']); ?>" required>
-        </p>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Nama Produk
+                </label>
+                <input type="text" name="nama_produk"
+                    value="<?= $produk['nama_produk']; ?>"
+                    class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
 
-        <p>
-            <label>Harga</label><br>
-            <input type="number" name="harga" value="<?= $produk['harga']; ?>" required>
-        </p>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Harga
+                </label>
+                <input type="number" name="harga"
+                    value="<?= $produk['harga']; ?>"
+                    class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
 
-        <p>
-            <label>Stok</label><br>
-            <input type="number" name="stok" value="<?= $produk['stok']; ?>" required>
-        </p>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Stok
+                </label>
+                <input type="number" name="stok"
+                    value="<?= $produk['stok']; ?>"
+                    class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
 
-        <p>
-            <label>Deskripsi</label><br>
-            <textarea name="deskripsi" required><?= htmlspecialchars($produk['deskripsi']); ?></textarea>
-        </p>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Deskripsi
+                </label>
+                <textarea name="deskripsi" rows="4"
+                    class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"><?= $produk['deskripsi']; ?></textarea>
+            </div>
 
-        <p>
-            <label>Nama File Gambar</label><br>
-            <input type="text" name="gambar" value="<?= htmlspecialchars($produk['gambar']); ?>" required>
-        </p>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Gambar Saat Ini
+                </label>
+                <div class="flex justify-center">
+                    <img src="/FLOMART-ets/uploads/produk/<?= $produk['gambar']; ?>"
+                        class="w-24 h-24 object-cover rounded-xl border shadow-sm">
+                </div>
+            </div>
 
-        <button type="submit" name="update">Update</button>
-        <a href="/FLOMART-ets/admin/produk/index.php">Kembali</a>
-    </form>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Upload Gambar Baru
+                </label>
+                <input type="file" name="gambar"
+                    class="w-full border border-gray-300 rounded-lg p-2 bg-gray-50">
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <button type="submit"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition duration-200">
+                    Update
+                </button>
+
+                <a href="/FLOMART-ets/admin/dashboard_view.php"
+                    onclick="return confirm('Yakin tidak jadi edit produk?')"
+                    class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg text-center font-semibold transition duration-200">
+                    Batal
+                </a>
+            </div>
+
+        </form>
+    </div>
 
 </body>
 </html>

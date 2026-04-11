@@ -18,20 +18,26 @@ if (isset($_SESSION['id_user'])) {
     $_SESSION['last_activity'] = time();
 }
 
-function harusLogin() {
-    if (!isset($_SESSION['id_user'])) {
-        $redirect = urlencode($_SERVER['REQUEST_URI']);
-        header("Location: /FLOMART-ets/login/login.php?redirect=$redirect");
-        exit;
+// FIX TANPA UBAH FILE LAIN
+
+if (!function_exists('harusLogin')) {
+    function harusLogin() {
+        if (!isset($_SESSION['id_user'])) {
+            $redirect = urlencode($_SERVER['REQUEST_URI']);
+            header("Location: /FLOMART-ets/login/login.php?redirect=$redirect");
+            exit;
+        }
     }
 }
 
-function cekRole($role) {
-    harusLogin();
+if (!function_exists('cekRole')) {
+    function cekRole($role) {
+        harusLogin();
 
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== $role) {
-        header("Location: /FLOMART-ets/login/login.php");
-        exit;
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== $role) {
+            header("Location: /FLOMART-ets/login/login.php");
+            exit;
+        }
     }
 }
 ?>
