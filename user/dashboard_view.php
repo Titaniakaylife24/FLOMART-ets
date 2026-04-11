@@ -301,11 +301,7 @@ $gambarRekom = !empty($rekom['gambar'])
 
 </section>
     <!-- PRODUK -->
-<<<<<<< HEAD
     <section id="produk" class="mb-32">
-=======
-    <section class="mb-20">
->>>>>>> titania
 
         <div class="grid grid-cols-4 gap-6">
 
