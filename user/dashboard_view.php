@@ -97,7 +97,7 @@ $isPembeli = isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli';
 
     <!-- GREETING -->
     <section class="mb-6 mt-10">
-        <h1 class="text-2xl font-bold">
+        <h1 class="text-4xl font-bold">
             Selamat datang, <?= htmlspecialchars($nama); ?>!
         </h1>
     </section>
