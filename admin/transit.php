@@ -49,9 +49,7 @@ $loginUrl = "/FLOMART-ets/login/login.php?redirect=" . $redirect;
 
     <nav class="border-t px-10 py-3 flex justify-center gap-10 text-gray-500 font-medium">
         <a href="/FLOMART-ets/user/dashboard.php" class="hover:text-green-600">Beranda</a>
-        <a href="#" class="hover:text-green-600">Toko</a>
         <a href="/FLOMART-ets/admin/transit.php" class="text-green-600 border-b-2 border-green-600 pb-1">Mulai Jualan</a>
-        <a href="#" class="hover:text-green-600">Blog</a>
         <a href="/FLOMART-ets/user/tentang_kami.php" class="hover:text-green-600">Tentang Kami</a>
     </nav>
 </header>

@@ -155,9 +155,7 @@ if ($isLogin) {
             Beranda
         </a>
 
-        <a href="#">Toko</a>
         <a href="/FLOMART-ets/admin/transit.php">Mulai Jualan</a>
-        <a href="#">Blog</a>
         <a href="/FLOMART-ets/user/tentang_kami.php">Tentang Kami</a>
 
     </nav>
