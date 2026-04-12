@@ -71,7 +71,7 @@ $jumlahKeranjang = 0;
 if ($isLogin) {
     $id_user = $_SESSION['id_user'];
 
-    $queryKeranjang = "SELECT SUM(jumlah) as total FROM keranjang WHERE id_user = $id_user";
+    $queryKeranjang = "SELECT COUNT(DISTINCT id_produk) as total FROM keranjang WHERE id_user = $id_user";
     $resultKeranjang = mysqli_query($conn, $queryKeranjang);
 
     if ($resultKeranjang) {
