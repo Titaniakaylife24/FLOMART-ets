@@ -49,21 +49,22 @@
         <form action="proses_register.php" method="POST" class="space-y-4">
         <input type="text" name="nama" placeholder="Nama lengkap" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
         <input type="email" name="email" placeholder="Email" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
-        <div class="relative">
+        
+<div class="flex items-center border rounded-lg px-4 py-2 w-full bg-white focus-within:ring-2 focus-within:ring-green-500">
     <input 
         type="password" 
         name="password" 
         id="registerPassword"
         placeholder="Password" 
         required 
-        class="w-full border rounded-lg px-4 py-2 pr-12 focus:ring-2 focus:ring-green-500 outline-none"
+       class="flex-1 outline-none text-gray-700 placeholder-gray-400 bg-transparent"
     >
 
     <img 
-        src="../assets/img/eye-close.png"
+        src="../assets/img/ketutup3.png"
         id="registerEye"
         onclick="togglePassword('registerPassword', 'registerEye')"
-        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 cursor-pointer"
+         class="w-5 h-5 cursor-pointer opacity-70 hover:opacity-100"
         alt="Toggle Password"
     >
 </div>

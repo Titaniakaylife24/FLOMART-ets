@@ -44,26 +44,31 @@
             <form action="proses_login.php" method="POST" class="space-y-4">
                 <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect ?? '') ?>">
             <input type="email" name="email" placeholder="Email" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"><br>
-            <div class="relative">
+            
+            
+<div class="flex items-center border rounded-lg px-4 py-2 w-full bg-white focus-within:ring-2 focus-within:ring-green-500">
+
+    <!-- Inputan -->
     <input 
-        type="password" 
-        name="password" 
+        type="password"
+        name="password"
         id="loginPassword"
-        placeholder="Password" 
-        required 
-        class="w-full border rounded-lg px-4 py-2 pr-12 focus:ring-2 focus:ring-green-500 outline-none"
+        placeholder="Password"
+        required
+        class="flex-1 outline-none text-gray-700 placeholder-gray-400 bg-transparent"
     >
 
+    <!-- Icon Mata -->
     <img 
-        src="../assets/img/eye-close.png"
+        src="../assets/img/ketutup3.png"
         id="loginEye"
         onclick="togglePassword('loginPassword', 'loginEye')"
-        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 cursor-pointer"
-        alt="Toggle Password"
+        class="w-5 h-5 cursor-pointer opacity-70 hover:opacity-100"
     >
+
 </div>
 
-            <label class="flex items-center gap-2 text-sm text-gray-600">
+        <label class="flex items-center gap-2 text-sm text-gray-600">
              <input type="checkbox" name="remember"> Remember Me
             </label><br><br>
 
