@@ -175,7 +175,7 @@ $adaBukti = !empty($p['bukti_pembayaran']);
         ): ?>
 
             <?php if (!$adaBukti): ?>
-                <a href="upload_bukti.php?id=<?= $p['id_pesanan']; ?>"
+                <a href="pembayaran.php?id=<?= $p['id_pesanan']; ?>"
                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
                     Upload Bukti
                 </a>

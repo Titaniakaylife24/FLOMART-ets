@@ -31,7 +31,10 @@ if (isset($_POST['upload'])) {
 
 /* ambil data pesanan */
 $pesanan = mysqli_fetch_assoc(mysqli_query($conn, "
-    SELECT pesanan.*, users.nama, users.no_hp
+   SELECT 
+        pesanan.*, 
+        users.nama AS nama_user, 
+        users.no_hp AS no_hp_user
     FROM pesanan
     JOIN users ON pesanan.id_user = users.id_user
     WHERE id_pesanan = $id
@@ -66,7 +69,7 @@ $bukti = $pesanan['bukti_pembayaran'];
         Pembayaran Pesanan #<?= $pesanan['id_pesanan']; ?>
     </h2>
 
-    <p><b>Nama:</b> <?= $pesanan['nama']; ?></p>
+    <p><b>Nama:</b> <?= $pesanan['nama_penerima']; ?></p>
     <p><b>No HP:</b> <?= $pesanan['no_hp']; ?></p>
     <p><b>Alamat:</b> <?= $pesanan['alamat_kirim']; ?></p>
     <p><b>Metode:</b> <?= $pesanan['metode_pembayaran']; ?></p>
