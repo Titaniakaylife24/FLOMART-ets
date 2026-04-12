@@ -1,4 +1,4 @@
-<?php
+git<?php
 include __DIR__ . '/../cek_login.php';
 include __DIR__ . '/../koneksi/koneksi.php';
 
@@ -126,7 +126,7 @@ if ($isLogin) {
                 </p>
             </div>
 
-            <img src="../assets/img/FotoLogin.png" width="300" alt="Tentang FLOMART">
+            <img src="../assets/img/FotoRegis.png" width="300" alt="Tentang FLOMART">
         </div>
     </section>
 
@@ -151,8 +151,7 @@ if ($isLogin) {
             </div>
             <h2 class="text-2xl font-bold mb-4">Visi</h2>
             <p class="text-gray-600 leading-relaxed">
-                Menjadi marketplace tanaman terpercaya yang mendorong masyarakat untuk hidup lebih hijau,
-                sehat, dan berkelanjutan.
+                “ Menjadi platform e-commerce tanaman yang mendukung gaya hidup hijau dan pertumbuhan usaha berkelanjutan. ”
             </p>
         </div>
 

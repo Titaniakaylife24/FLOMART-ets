@@ -79,7 +79,7 @@ $loginUrl = "/FLOMART-ets/login/login.php?admin=1&redirect=" . $redirect;
 
     <!-- BANNER TRANSIT ADMIN -->
     <section class="mb-20">
-        <div class="rounded-2xl px-10 py-12 flex items-center justify-between bg-cover bg-center"
+        <div class="relative rounded-2xl px-10 py-12 flex items-center justify-between bg-cover bg-center overflow-hidden"
              style="background-image: url('../assets/img/BannerBg.png');">
 
             <div class="max-w-xl">
@@ -111,15 +111,8 @@ $loginUrl = "/FLOMART-ets/login/login.php?admin=1&redirect=" . $redirect;
             </div>
 
             <div class="relative">
-                <img src="../assets/img/FotoLogin.png" width="300">
+                <img src="../assets/img/FotoJualan.png" width="300">
 
-                <div class="absolute top-8 -left-8 bg-white rounded-xl shadow px-4 py-3 text-sm font-medium">
-                    Dashboard Admin
-                </div>
-
-                <div class="absolute bottom-10 -right-8 bg-white rounded-xl shadow px-4 py-3 text-sm font-medium text-green-600">
-                    Kelola Produk
-                </div>
             </div>
         </div>
     </section>
