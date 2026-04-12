@@ -89,11 +89,27 @@ $bukti = $pesanan['bukti_pembayaran'];
 
 <div class="flex gap-3">
 
-    <a href="update_status.php?id=<?= $id; ?>&aksi=terima"
-       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-        Terima
-    </a>
+    <!-- LOGIC TERIMA -->
+    <?php if ($pesanan['metode_pembayaran'] == 'Transfer' && empty($pesanan['bukti_pembayaran'])): ?>
 
+        <!-- ❌ BELUM ADA BUKTI -->
+        <button 
+            onclick="alert('Pembeli belum upload bukti pembayaran!')" 
+            class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed">
+            Terima
+        </button>
+
+    <?php else: ?>
+
+        <!-- ✅ BOLEH TERIMA -->
+        <a href="update_status.php?id=<?= $id; ?>&aksi=terima"
+           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            Terima
+        </a>
+
+    <?php endif; ?>
+
+    <!-- TOMBOL TOLAK (tetap normal) -->
     <a href="update_status.php?id=<?= $id; ?>&aksi=tolak"
        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
        onclick="return confirm('Yakin ingin menolak pesanan ini?')">

@@ -5,10 +5,8 @@ include '../../koneksi/koneksi.php';
 cekRole('admin');
 
 $query = "
-SELECT pesanan.*, users.nama 
-FROM pesanan
-JOIN users ON pesanan.id_user = users.id_user
-ORDER BY pesanan.tanggal_pesanan DESC
+SELECT * FROM pesanan
+ORDER BY tanggal_pesanan DESC
 ";
 
 $result = mysqli_query($conn, $query);
@@ -39,7 +37,7 @@ $result = mysqli_query($conn, $query);
 
 <table class="w-full text-sm">
 
-<thead class="bg-gray-100">
+<thead  class="bg-green-100 text-green-800">
 <tr>
 <th class="p-3">ID</th>
 <th class="p-3">Pembeli</th>
@@ -68,7 +66,12 @@ if ($status == 'dibatalkan') $warna = "bg-red-100 text-red-700";
 
 <tr class="border-t">
 <td class="p-3"><?= $p['id_pesanan']; ?></td>
-<td class="p-3"><?= $p['nama']; ?></td>
+<td class="p-3">
+    <?= htmlspecialchars($p['nama_penerima']); ?><br>
+    <span class="text-xs text-gray-500">
+        <?= $p['no_hp']; ?>
+    </span>
+</td>
 <td class="p-3"><?= $p['tanggal_pesanan']; ?></td>
 
 <td class="p-3 text-green-600 font-semibold">
@@ -77,7 +80,7 @@ Rp <?= number_format($p['total_harga']); ?>
 
 <td class="p-3"><?= $p['metode_pembayaran']; ?></td>
 
-<!-- INI KOLOM CATATAN -->
+<!-- KOLOM CATATAN -->
 <td class="p-3 text-gray-600">
 <?= htmlspecialchars($p['catatan']); ?>
 </td>
